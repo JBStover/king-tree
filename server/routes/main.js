@@ -1,14 +1,13 @@
 const Character = require('../models/character');
-
-
+const Literature = require('../models/literature');
 const router = require("express").Router();
 
-router.get("/familymember", async (req, res, next) => {
+router.get("/character/", async (req, res, next) => {
     const searchFirst = req.body.firstName;
     const searchLast = req.body.lastName;
-    const searchDate = req.body.dob;
-
-    Familymember.findOne({ firstName: searchFirst, lastName: searchLast, dob: searchDate })
+    
+    Character.findOne({ firstName: searchFirst, lastName: searchLast })
+    .populate("literature")
     .populate("children")
     .populate("parents")
     .exec((err, targetMember) => {
@@ -17,21 +16,35 @@ router.get("/familymember", async (req, res, next) => {
     });
 });
 
-router.post("/familymember/", async (req, res, next) => {
-    let memberToBeAdded = new Familymember();
 
-    memberToBeAdded.firstName = req.body.firstName;
-    memberToBeAdded.lastName = req.body.lastName;
-    memberToBeAdded.dob = req.body.dob;
-    memberToBeAdded.dod = req.body.dod;
-    memberToBeAdded.parents = [];
-    memberToBeAdded.children = [];
+/*
 
-    memberToBeAdded.save((err) => {
+    firstName: String,
+    lastName: String,
+    dob: String,
+    dod: String,
+    literature: [{ type: Schema.Types.ObjectId, ref: "Literature" }],
+    children: [{ type: Schema.Types.ObjectId, ref: "Character" }],
+    parents: [{ type: Schema.Types.ObjectId, ref: "Character" }]
+
+*/
+
+router.post("/character", async (req, res, next) => {
+    let characterToBeAdded = new Character();
+
+    characterToBeAdded.firstName = req.body.firstName;
+    characterToBeAdded.lastName = req.body.lastName;
+    characterToBeAdded.dob = req.body.dob;
+    characterToBeAdded.dod = req.body.dod;
+
+    characterToBeAdded.children = [];
+    characterToBeAdded.parents = [];
+
+    characterToBeAdded.save((err) => {
         if(err) throw err;
     });
 
-    res.send(memberToBeAdded);
+    res.send(characterToBeAdded);
 });
 
 router.put("", async (req, res, next) => {
