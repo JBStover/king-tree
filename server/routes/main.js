@@ -2,7 +2,7 @@ const Character = require('../models/character');
 const Literature = require('../models/literature');
 const router = require("express").Router();
 
-router.get("/character/", async (req, res, next) => {
+router.get("/character", async (req, res, next) => {
     const searchFirst = req.body.firstName;
     const searchLast = req.body.lastName;
     
@@ -10,9 +10,20 @@ router.get("/character/", async (req, res, next) => {
     .populate("literature")
     .populate("children")
     .populate("parents")
-    .exec((err, targetMember) => {
+    .exec((err, targetCharacter) => {
         if (err) return next(err);
-        res.send(targetMember);
+        res.send(targetCharacter);
+    });
+});
+
+router.get("/characters", async (req, res, next) => {
+    Character.find({})
+    .populate("literature")
+    .populate("children")
+    .populate("parents")
+    .exec((err, targetCharacters) => {
+        if (err) return next(err);
+        res.send(targetCharacters);
     });
 });
 
