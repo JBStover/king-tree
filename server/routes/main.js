@@ -2,6 +2,7 @@ const Character = require('../models/character');
 const Literature = require('../models/literature');
 const router = require("express").Router();
 
+// GET character by first and last name
 router.get("/character", async (req, res, next) => {
     const searchFirst = req.body.firstName;
     const searchLast = req.body.lastName;
@@ -12,10 +13,11 @@ router.get("/character", async (req, res, next) => {
     .populate("parents")
     .exec((err, targetCharacter) => {
         if (err) return next(err);
-        res.send(targetCharacter);
+        res.status(200).send(targetCharacter);
     });
 });
 
+// GET ALL characters in the database
 router.get("/characters", async (req, res, next) => {
     Character.find({})
     .populate("literature")
@@ -23,7 +25,21 @@ router.get("/characters", async (req, res, next) => {
     .populate("parents")
     .exec((err, targetCharacters) => {
         if (err) return next(err);
-        res.send(targetCharacters);
+        res.status(200).send(targetCharacters);
+    });
+});
+
+//GET single character by ID
+router.get("/character/:id", async (req, res, next) => {
+    const charID = req.params.id;
+
+    Character.findOne({ _id: charID })
+    .populate("literature")
+    .populate("children")
+    .populate("parents")
+    .exec((err, targetCharacter) => {
+        if (err) return next(err);
+        res.status(200).send(targetCharacter);
     });
 });
 
@@ -58,13 +74,38 @@ router.post("/character", async (req, res, next) => {
     res.send(characterToBeAdded);
 });
 
-router.put("", async (req, res, next) => {
+//PUT character by ID
+router.put("/character/:id", async (req, res, next) => {
+    const characterId = req.params.id;
+    const updatedFirstName = req.body.firstName;
+    const updatedLastName = req.body.lastName;
+    const updatedDob = req.body.dob;
+    const updatedDod = req.body.dod;
 
+    Character.findOneAndUpdate(
+        { _id: characterId },
+        { firstName: updatedFirstName,
+          lastName: updatedLastName,
+          dob: updatedDob,
+          dod: updatedDod
+        },
+        (err, updatedCharacter) => {
+            if (err) throw err;
+            else res.send(updatedCharacter);
+        });
 });
 
-router.delete("", async (req, res, next) => {
-
+//DELETE a character by ID
+router.delete("/character/:id", async (req, res, next) => {
+    const characterId = req.params.id;    
+    
+    Character.findByIdAndRemove(characterId, (err, deletedChar) => {
+        if (err) throw err;
+        res.send(`The character with id ${characterId} has been deleted`)
+    })
 });
+
+
 
 //Login with any family name 
 router.post("/login", (req, res, next) => {
