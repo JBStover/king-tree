@@ -3,9 +3,10 @@ const Literature = require('../models/literature');
 const router = require("express").Router();
 
 // GET character by first and last name
-router.get("/character", async (req, res, next) => {
-    const searchFirst = req.body.firstName;
-    const searchLast = req.body.lastName;
+router.get("/character/:firstName/:lastName", async (req, res, next) => {
+    console.log(req.params)
+    const searchFirst = req.params.firstName;
+    const searchLast = req.params.lastName;
     
     Character.findOne({ firstName: searchFirst, lastName: searchLast })
     .populate("literature")

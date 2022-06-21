@@ -8,9 +8,16 @@ const initialState = {
     status: null
 };
 
-export const fetchCharacter = createAsyncThunk('character/getCharacter', async () => {
-    try {
-        const response = await axios.get(`${ROOT_URL}/character`);
+//router.get("/character/:firstName/:lastName"
+
+export const getCharacter = createAsyncThunk('character/getCharacter', async (searchedName) => {
+    console.log(searchedName)  
+    const searchedFirstName = searchedName.firstName;
+    const searchedLastName = searchedName.lastName;
+
+    try {        
+        const response = await axios.get(`${ROOT_URL}/character/${searchedFirstName}/${searchedLastName}`);
+        console.log(response)
         return response.data;
     } catch (err) {
         return err.message;
@@ -32,14 +39,15 @@ const characterSlice = createSlice({
     reducers: {},
     extraReducers(builder) {
         builder
-            .addCase(fetchCharacter.pending, (state, action) => {
+            .addCase(getCharacter.pending, (state, action) => {
                 state.status = 'loading'
             })
-            .addCase(fetchCharacter.fulfilled, (state, action) => {
+            .addCase(getCharacter.fulfilled, (state, action) => {
                 state.status = 'action successful'
-                return action.payload;
+                state.characters = state.characters.concat(action.payload);
+                
             })
-            .addCase(fetchCharacter.rejected, (state, action) => {
+            .addCase(getCharacter.rejected, (state, action) => {
                 state.status = 'action failed'   
                 return action.payload;
             })
