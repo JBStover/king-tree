@@ -31,7 +31,7 @@ describe('Character Routes Test', () => {
 
     describe("/GET /character/:id", () => {
         it("should GET a character by id", (done) => {
-            const charId = '62a88c7db7e2a0c99a52da56';  //This is the id of the static test character
+            const charId = '62b21bd3cb159acb844e75de';  //This is the id of the static test character
             chai.request(server)            
                 .get("/character/" + charId)
                 .end((err, response) => {
@@ -40,8 +40,8 @@ describe('Character Routes Test', () => {
                     response.body.should.have.property('_id');
                     response.body.should.have.property('firstName')
                     response.body.should.have.property('lastName')
-                    response.body.should.have.property('dob')
-                    response.body.should.have.property('dod')
+                    response.body.should.have.property('firstAppearance')
+                    response.body.should.have.property('lastAppearance')
                     response.body.should.have.property('literature')
                     response.body.should.have.property('children')
                     response.body.should.have.property('parents')
@@ -59,8 +59,8 @@ describe('Character Routes Test', () => {
             const newTestCharacter = {
                 firstName: "mochaFirstName",
                 lastName: "mochaLastName",
-                dob: "mochaDob",
-                dod: "mochaDod"
+                firstAppearance: "mochaFirstAppearance",
+                lastAppearance: "mochaLastAppearance"
             };            
 
             chai.request(server)
@@ -72,8 +72,8 @@ describe('Character Routes Test', () => {
                     response.body.should.have.property('_id');
                     response.body.should.have.property('firstName').eql('mochaFirstName'); 
                     response.body.should.have.property('lastName').eql('mochaLastName');
-                    response.body.should.have.property('dob').eql('mochaDob');
-                    response.body.should.have.property('dod').eql('mochaDod');
+                    response.body.should.have.property('firstAppearance').eql('mochaFirstAppearance');
+                    response.body.should.have.property('lastAppearance').eql('mochaLastAppearance');
                     response.body.should.have.property('literature');
                     response.body.should.have.property('children');
                     response.body.should.have.property('parents');
@@ -93,8 +93,8 @@ describe('Character Routes Test', () => {
             const updatedCharacter = {
                 firstName: "changedMochaFirstName",
                 lastName: "changedMochaLastName",
-                dob: "changedMochaDob",
-                dod: "changedMochaDod"                 
+                firstAppearance: "changedMochaFirstAppearance",
+                lastAppearance: "changedMochaLastAppearance"                 
             }
             chai.request(server)
                 .put("/character/" + createdCharId)

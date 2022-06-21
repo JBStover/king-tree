@@ -45,25 +45,15 @@ router.get("/character/:id", async (req, res, next) => {
 });
 
 
-/*
 
-    firstName: String,
-    lastName: String,
-    dob: String,
-    dod: String,
-    literature: [{ type: Schema.Types.ObjectId, ref: "Literature" }],
-    children: [{ type: Schema.Types.ObjectId, ref: "Character" }],
-    parents: [{ type: Schema.Types.ObjectId, ref: "Character" }]
-
-*/
-
+//POST a new character model
 router.post("/character", async (req, res, next) => {
     let characterToBeAdded = new Character();
 
     characterToBeAdded.firstName = req.body.firstName;
     characterToBeAdded.lastName = req.body.lastName;
-    characterToBeAdded.dob = req.body.dob;
-    characterToBeAdded.dod = req.body.dod;
+    characterToBeAdded.firstAppearance = req.body.firstAppearance;
+    characterToBeAdded.lastAppearance = req.body.lastAppearance;
 
     characterToBeAdded.children = [];
     characterToBeAdded.parents = [];
@@ -80,15 +70,15 @@ router.put("/character/:id", async (req, res, next) => {
     const characterId = req.params.id;
     const updatedFirstName = req.body.firstName;
     const updatedLastName = req.body.lastName;
-    const updatedDob = req.body.dob;
-    const updatedDod = req.body.dod;
+    const updatedFirstAppearance = req.body.firstAppearance;
+    const updatedLastAppearance = req.body.lastAppearance;
 
     Character.findOneAndUpdate(
         { _id: characterId },
         { firstName: updatedFirstName,
           lastName: updatedLastName,
-          dob: updatedDob,
-          dod: updatedDod
+          firstAppearance: updatedFirstAppearance,
+          lastAppearance: updatedLastAppearance
         },
         (err, updatedCharacter) => {
             if (err) throw err;
@@ -105,6 +95,81 @@ router.delete("/character/:id", async (req, res, next) => {
         res.send(`The character with id ${characterId} has been deleted`)
     })
 });
+
+//POST a new literature model
+router.post("/literature", async (req, res, next) => {
+    let literatureToBeAdded = new Literature();
+
+    literatureToBeAdded.title = req.body.title;
+    literatureToBeAdded.releaseDate = req.body.releaseDate;
+    literatureToBeAdded.characters = [];
+
+    literatureToBeAdded.save((err) => {
+        if(err) throw err;
+    });
+
+    res.send(literatureToBeAdded);    
+});
+
+//PUT (edit) an existing literature model by id
+router.put("/literature/:id", async (req, res, next) => {
+    const literatureId = req.params.id;
+    const updatedTitle = req.body.title;
+    const updatedReleaseDate = req.body.releaseDate;
+
+    //TODO add an if statement to determine if the characters array is being modified
+
+    Literature.findOneAndUpdate(
+        { _id: literatureId },
+        { title: updatedTitle,
+          releaseDate: updatedReleaseDate  
+        },
+        (err, updatedLiterature) => {
+            if (err) throw err;
+            else res.send(updatedLiterature);
+        });
+});
+
+//DELETE an existing literature model by id
+router.delete("/literature/:id", async (req, res, next) => {
+    const literatureId = req.params.id;
+
+    Literature.findByIdAndRemove(literatureId, (err, deletedLit) => {
+        if (err) throw err;
+        res.send(`The book/novel with id ${deletedLit} has been deleted`)
+    })
+});
+
+
+
+
+
+
+/*
+router.put("/character/:id", async (req, res, next) => {
+    const characterId = req.params.id;
+    const updatedFirstName = req.body.firstName;
+    const updatedLastName = req.body.lastName;
+    const updatedFirstAppearance = req.body.firstAppearance;
+    const updatedLastAppearance = req.body.lastAppearance;
+
+    Character.findOneAndUpdate(
+        { _id: characterId },
+        { firstName: updatedFirstName,
+          lastName: updatedLastName,
+          firstAppearance: updatedFirstAppearance,
+          lastAppearance: updatedLastAppearance
+        },
+        (err, updatedCharacter) => {
+            if (err) throw err;
+            else res.send(updatedCharacter);
+        });
+});
+*/
+
+
+
+
 
 
 
