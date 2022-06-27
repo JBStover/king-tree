@@ -10,8 +10,7 @@ const initialState = {
 
 //router.get("/character/:firstName/:lastName"
 
-export const getCharacter = createAsyncThunk('character/getCharacter', async (searchedName) => {
-    console.log(searchedName)  
+export const getCharacter = createAsyncThunk('character/getCharacter', async (searchedName) => {      
     const searchedFirstName = searchedName.firstName;
     const searchedLastName = searchedName.lastName;
 
@@ -44,7 +43,7 @@ const characterSlice = createSlice({
             })
             .addCase(getCharacter.fulfilled, (state, action) => {
                 state.status = 'action successful'
-                state.characters = state.characters.concat(action.payload);
+                state.characters = action.payload;
                 
             })
             .addCase(getCharacter.rejected, (state, action) => {

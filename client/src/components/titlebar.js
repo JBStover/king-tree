@@ -2,12 +2,14 @@ import {React, useState, useEffect } from 'react';
 import { Navbar, Nav, Container, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
 import { LinkContainer, } from 'react-router-bootstrap';
 import {getCharacter} from '../slices/characterSlice';
+import {getLiterature} from '../slices/literatureSlice';
 import { useDispatch, useSelector } from 'react-redux'; 
 
 
 
 function TitleBar() {
-    const characters = useSelector(state => state.characters.characters)
+    const characters = useSelector(state => state.characters.characters);
+    const books = useSelector(state => state.literature.books);
     const [searchParam, setSearchParam] = useState("");
     
     const dispatch = useDispatch();
@@ -22,6 +24,7 @@ function TitleBar() {
         const lastName = searchString[1];
         console.log(firstName + lastName)
         dispatch(getCharacter({firstName: firstName, lastName: lastName}));
+        dispatch(getLiterature({title: data}));
     };
   
   

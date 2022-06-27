@@ -124,6 +124,13 @@ describe('Character Routes Test', () => {
         });
     });
 
+     /**
+     * Test the DELETE character route  
+     * 
+     */
+
+    
+
     
 
     

@@ -96,6 +96,21 @@ router.delete("/character/:id", async (req, res, next) => {
     })
 });
 
+//GET a literature model by title
+router.get("/literature/:title", async (req, res, next) => {
+    console.log(req.params)
+    const searchTitle = req.params.title;
+    
+    
+    Literature.findOne({ title: {"$regex": searchTitle, "$options": "i" } })
+    .populate("characters")
+    .exec((err, targetBook) => {
+        if (err) return next(err);
+        res.status(200).send(targetBook);
+    });
+});
+
+
 //POST a new literature model
 router.post("/literature", async (req, res, next) => {
     let literatureToBeAdded = new Literature();
@@ -139,37 +154,6 @@ router.delete("/literature/:id", async (req, res, next) => {
         res.send(`The book/novel with id ${deletedLit} has been deleted`)
     })
 });
-
-
-
-
-
-
-/*
-router.put("/character/:id", async (req, res, next) => {
-    const characterId = req.params.id;
-    const updatedFirstName = req.body.firstName;
-    const updatedLastName = req.body.lastName;
-    const updatedFirstAppearance = req.body.firstAppearance;
-    const updatedLastAppearance = req.body.lastAppearance;
-
-    Character.findOneAndUpdate(
-        { _id: characterId },
-        { firstName: updatedFirstName,
-          lastName: updatedLastName,
-          firstAppearance: updatedFirstAppearance,
-          lastAppearance: updatedLastAppearance
-        },
-        (err, updatedCharacter) => {
-            if (err) throw err;
-            else res.send(updatedCharacter);
-        });
-});
-*/
-
-
-
-
 
 
 
