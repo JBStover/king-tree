@@ -155,6 +155,22 @@ router.delete("/literature/:id", async (req, res, next) => {
     })
 });
 
+//POST an existing literature model (by id) to an existing character and vice versa
+router.post("/combineBookAndChar/:literature/:character", async (req, res, next) => {
+    const literatureId = req.params.literature;
+    const characterId = req.params.character;
+
+    const targetBook = await Literature.findById(literatureId).exec();
+    const targetCharacter = await Character.findById(characterId).exec();
+
+    targetBook.characters.push(targetCharacter);
+    targetBook.save();
+    targetCharacter.literature.push(targetBook);
+    targetCharacter.save();
+
+    res.send(targetBook);
+})
+
 
 
 //Login with any family name 
