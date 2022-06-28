@@ -11,31 +11,47 @@ const Home = () => {
     const characters = useSelector(state => state.characters.characters);
     const books = useSelector(state => state.literature.books);
     
-    console.log(characters)
-    console.log(books)    
+    const resultsChart = {
+        name: null,
+        children: []
+    };
+
+    async function createChart () {
+        resultsChart.name = characters.firstName + ' ' + characters.lastName;       
+
+        if (!_.isEmpty(characters) && _.isEmpty(books)) {
+            
+            console.log(characters.literature.length)
+            for (let i = 0; i <= characters.literature.length; i++) {
+                const newChartChild = {
+                    name: null,
+                    attributes: {
+                        'Release Date': null
+                    },
+                };
+                console.log(characters.literature[i].title)
+                newChartChild.name = characters.literature[i].title;
+                newChartChild.attributes['Release Date'] = characters.literature[i].releaseDate;
+                console.log(newChartChild)
+                resultsChart.children.push(newChartChild);
+                //newChartChild.name = null;
+                //newChartChild.attributes['Release Date'] = null;
+            }
+        }
+    };
     
 
     if (!_.isEmpty(characters) && _.isEmpty(books)) {
-        const resultsChart = {
-            name: characters.firstName,
-            children: [
-              {         
-                name: characters.literature[0].title,
-                attributes: {
-                  'Release Date': characters.literature[0].releaseDate,
-                },
-                
-                      }
-               
-                    ]}
+        createChart();
         
-        return (
-            
-                // `<Tree />` will fill width/height of its container; in this case `#treeWrapper`.
-                <div id="treeWrapper" style={{ width: '100em', height: '100em' }}>
-                  <Tree data={resultsChart} />
-                </div>
-              
+        return (            
+            // `<Tree />` will fill width/height of its container; in this case `#treeWrapper`.
+            <div id="treeWrapper" style={{ width: '100em', height: '100em' }}>
+                <Tree 
+                data={resultsChart}
+                orientation='vertical'
+                />
+            </div>              
         );
     } else if (!_.isEmpty(books) && _.isEmpty(characters)) {
         return (<div>
