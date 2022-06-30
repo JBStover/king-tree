@@ -4,6 +4,7 @@ import TitleBar from './components/titlebar';
 import About from './components/about';
 import Login from './components/login';
 import Updates from './components/updates';
+import Additions from './components/additions';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -14,7 +15,7 @@ const App = () => {
     <TitleBar />
       <Routes>           
           <Route exact path="/" element={<Home />}/>           
-          <Route path="/updates" element={<Updates />}/>   
+          <Route path="/additions" element={<Additions />}/>   
           <Route exact path="/login" element={<Login />}/>  
           <Route path="/about" element={<About />}/>
       </Routes> 

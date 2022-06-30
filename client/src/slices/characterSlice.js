@@ -23,9 +23,9 @@ export const getCharacter = createAsyncThunk('character/getCharacter', async (se
     }
 });
 
-export const addNewCharacter = createAsyncThunk('character/addNewCharacter', async (body) => {
+export const addNewCharacter = createAsyncThunk('character/addNewCharacter', async (newCharacter) => {
     try {
-        const response = await axios.post(`${ROOT_URL}/character`);
+        const response = await axios.post(`${ROOT_URL}/character`, newCharacter);
         return response.data;
     } catch (err) {
         return err.message;

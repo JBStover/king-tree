@@ -11,8 +11,7 @@ const initialState = {
 //router.get("/character/:firstName/:lastName"
 
 export const getLiterature = createAsyncThunk('literature/getLiterature', async (searchedBook) => {
-    const searchedTitle = searchedBook.title;
-    
+    const searchedTitle = searchedBook.title;    
 
     try {        
         const response = await axios.get(`${ROOT_URL}/literature/${searchedTitle}`);
@@ -23,12 +22,10 @@ export const getLiterature = createAsyncThunk('literature/getLiterature', async 
     }
 });
 
-export const addNewLiterature = createAsyncThunk('literature/addNewLiterature', async (body) => {
-    //TODO create new literature object from the body and pass with req.body 
-    //body.title and body.releaseDate
+export const addNewLiterature = createAsyncThunk('literature/addNewLiterature', async (newBook) => {  
     
     try {
-        const response = await axios.post(`${ROOT_URL}/literature`);
+        const response = await axios.post(`${ROOT_URL}/literature`, newBook)        
         return response.data;
     } catch (err) {
         return err.message;

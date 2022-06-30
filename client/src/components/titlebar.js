@@ -38,8 +38,8 @@ function TitleBar() {
           <LinkContainer to="/">
           <Nav.Link>Home</Nav.Link>
           </LinkContainer>
-          <LinkContainer to="/updates">
-          <Nav.Link>Updates</Nav.Link>
+          <LinkContainer to="/additions">
+          <Nav.Link>Additions</Nav.Link>
           </LinkContainer>        
           <NavDropdown title="Dropdown" id="basic-nav-dropdown">
             <LinkContainer to="/login"><NavDropdown.Item href="#action/3.1">Login</NavDropdown.Item></LinkContainer>
